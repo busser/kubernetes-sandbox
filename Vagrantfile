@@ -21,41 +21,35 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision :hostmanager
-  config.vm.provision :ansible do |ansible|
-    ansible.compatibility_mode = "2.0"
-    ansible.playbook = "ansible/playbook.yml"
-  end
 
-  (1..1).each do |i|
-    config.vm.define "master-#{i}" do |master|
-      master.vm.hostname = "master-#{i}"
-      master.vm.network :private_network, ip: "10.10.10.1#{i}"
-      master.vm.provider :libvirt do |libvirt|
-        libvirt.cpus = 1
-        libvirt.memory = 2048
+  cluster = {
+    "master-1" => { :ip => "10.10.10.11", :cpus => 1, :memory => 2048 },
+    "worker-1" => { :ip => "10.10.10.21", :cpus => 1, :memory => 2048, :disk => "50G" },
+    "worker-2" => { :ip => "10.10.10.22", :cpus => 1, :memory => 2048, :disk => "50G" },
+    "worker-3" => { :ip => "10.10.10.23", :cpus => 1, :memory => 2048, :disk => "50G" },
+    "client-1" => { :ip => "10.10.10.31", :cpus => 1, :memory => 2048 },
+  }
+
+  cluster.each_with_index do | (hostname, specs), i |
+    config.vm.define hostname do |node|
+
+      node.vm.hostname = hostname
+      node.vm.network :private_network, ip: specs[:ip]
+      node.vm.provider :libvirt do |libvirt|
+        libvirt.cpus = specs[:cpus]
+        libvirt.memory = specs[:memory]
+        if specs.key?(:disk)
+          libvirt.storage :file, :size => specs[:disk]
+        end
       end
-    end
-  end
 
-  (1..3).each do |i|
-    config.vm.define "worker-#{i}" do |worker|
-      worker.vm.hostname = "broker-#{i}"
-      worker.vm.network :private_network, ip: "10.10.10.2#{i}"
-      worker.vm.provider :libvirt do |libvirt|
-        libvirt.cpus = 1
-        libvirt.memory = 2048
-        libvirt.storage :file, :size => '50G'
-      end
-    end
-  end
-
-  (1..1).each do |i|
-    config.vm.define "client-#{1}" do |client|
-      client.vm.hostname = "client-#{i}"
-      client.vm.network :private_network, ip: "10.10.10.3#{i}"
-      client.vm.provider :libvirt do |libvirt|
-        libvirt.cpus = 1
-        libvirt.memory = 2048
+      # run Ansible playbook only once for all nodes
+      if i == cluster.size - 1
+        node.vm.provision :ansible do |ansible|
+          ansible.compatibility_mode = "2.0"
+          ansible.limit = "all"
+          ansible.playbook = "ansible/playbook.yml"
+        end
       end
     end
   end
