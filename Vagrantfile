@@ -44,10 +44,11 @@ Vagrant.configure("2") do |config|
       end
 
       # run Ansible playbook only once for all nodes
-      if i == cluster.size - 1
+      if i == 0
         node.vm.provision :ansible do |ansible|
           ansible.compatibility_mode = "2.0"
           ansible.limit = "all"
+          ansible.galaxy_role_file = "ansible/requirements.yml"
           ansible.playbook = "ansible/playbook.yml"
         end
       end
