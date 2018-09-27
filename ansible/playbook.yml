@@ -3,4 +3,5 @@
   become: yes
   strategy: free
   roles:
-  - docker-installed
+  - kubeadm-installed
+  - kubelet-installed

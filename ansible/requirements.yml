@@ -2,3 +2,9 @@
 - src: https://github.com/busser/ansible-docker-installed
   version: v1.1.0
   name: docker-installed
+- src: https://github.com/busser/ansible-kubeadm-installed
+  version: v1.0.1
+  name: kubeadm-installed
+- src: https://github.com/busser/ansible-kubelet-installed
+  version: v1.0.1
+  name: kubelet-installed
