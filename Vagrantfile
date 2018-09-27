@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision :hostmanager
 
   cluster = {
-    "master-1" => { :ip => "10.10.10.11", :cpus => 1, :memory => 2048 },
+    "master-1" => { :ip => "10.10.10.11", :cpus => 2, :memory => 2048 },
     "worker-1" => { :ip => "10.10.10.21", :cpus => 1, :memory => 2048, :disk => "50G" },
     "worker-2" => { :ip => "10.10.10.22", :cpus => 1, :memory => 2048, :disk => "50G" },
     "worker-3" => { :ip => "10.10.10.23", :cpus => 1, :memory => 2048, :disk => "50G" },
