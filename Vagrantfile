@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
     libvirt.uri = "qemu:///system"
   end
 
-  config.vm.provision :hostmanager
+  #config.vm.provision :hostmanager
 
   cluster = {
     "master-1" => { :ip => "10.10.10.11", :cpus => 2, :memory => 2048 },
