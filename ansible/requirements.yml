@@ -1,10 +1,13 @@
 ---
 - name: docker-installed
   src: https://github.com/busser/ansible-docker-installed
-  version: v1.2.0
+  version: v1.2.1
 - name: kubeadm-installed
   src: https://github.com/busser/ansible-kubeadm-installed
-  version: v1.0.1
-- name: kubelet-installed
-  src: https://github.com/busser/ansible-kubelet-installed
-  version: v1.0.2
+  version: v2.0.0
+- name: kubernetes-master-installed
+  src: https://github.com/busser/ansible-kubernetes-master-installed
+  version: v1.0.0
+- name: kubernetes-worker-installed
+  src: https://github.com/busser/ansible-kubernetes-worker-installed
+  version: v1.0.0

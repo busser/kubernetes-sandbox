@@ -1,7 +1,11 @@
 ---
-- hosts: master-*:worker-*
+- hosts: master-*
   become: yes
   strategy: free
   roles:
-  - kubeadm-installed
-  - kubelet-installed
+  - kubernetes-master-installed
+- hosts: worker-*
+  become: yes
+  strategy: free
+  roles:
+  - kubernetes-worker-installed
