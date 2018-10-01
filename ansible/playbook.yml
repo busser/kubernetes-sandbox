@@ -1,11 +1,9 @@
 ---
 - hosts: master-*
   become: yes
-  strategy: free
   roles:
   - kubernetes-master-installed
 - hosts: worker-*
   become: yes
-  strategy: free
   roles:
   - kubernetes-worker-installed
